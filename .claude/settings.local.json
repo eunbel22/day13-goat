@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "PowerShell(npx vercel --prod)",
+      "Bash(git push *)",
+      "Bash(curl -s \"https://epop.ai/ko?af_dp=sayvoca%3A%2F%2Fmainactivity&af_ad=ko&pid=sayvoca&is_retargeting=true\")",
+      "Bash(find ~ -name \"@KakaoTalk*.jpg\" 2>/dev/null | head -5)",
+      "Read(//c/Users/qwr01/**)"
+    ]
+  }
+}
