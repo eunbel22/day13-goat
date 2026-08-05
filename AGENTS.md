@@ -1,100 +1,132 @@
 # AGENTS.md
-아젠트가 따라야 할 지침. Claude Code가 이 프로젝트를 수정하기 전에 읽는다.
-
-Day13 실습 프로젝트(커피 자판기 - 주문 등록 + 판매 현황 조회 + 상세 페이지) 전용이다.
-
-## 절대 규칙: 사용자의 의도를 먼저 확인하라
-
-요청이 명확하지 않거나, 여러 해석이 가능하면 **바로 진행하지 말고 먼저 AskUserQuestion으로 확인한다.**
-
-### 위반사항 1: 디자인 변경 요청의 "정확한 대상" 확인
-
-**상황**: 사용자가 "글자수를 늘려달라"고 하면, 이것은:
-- 어느 요소의 글자수를 늘릴 것인가?
-- 글자 크기를 늘릴 것인가, 표시할 텍스트 길이를 늘릴 것인가?
-- 다른 부분(색상, 그라데이션 등)은 건드리지 않을 것인가?
-
-**해야 할 일**:
-```
-사용자: "글자수를 늘려달라"
-→ 확인: "list.html의 상품 이름(차트 라벨)이 '아메리카노'처럼 긴 이름도 완전히 표시되도록 하려는 건가요?
-          또는 다른 요소에 대한 요청인가요? 글자 크기, 표시 영역 등 구체적으로 알려주세요."
-→ 사용자의 답변을 받은 후 진행
-```
-
-**하지 말 것**:
-- 요청을 자기 마음대로 해석해서 "그래프에 그라데이션을 넣자", "색을 진하게 하자" 같은 추가 변경 금지
-- 요청하지 않은 다른 UI 요소 변경 금지
-- "사용자가 원했을 것 같은 개선"이라는 미명 하에 임의로 진행 금지
+Guidelines for Claude Code before modifying this Day13 coffee vending machine project (order registration + sales dashboard + detail page).
 
 ---
 
-### 위반사항 2: 샘플/참고 이미지의 의도 확인
+## Golden Rule: Confirm User Intent Before Acting
 
-**상황**: 사용자가 말해보카의 트로피 이미지를 보여줬을 때, 이것은:
-- 트로피를 **어디에** 사용하려고 하는가?
-- 어떤 **목적** 때문에 보여줬는가?
-- 그냥 "화려함"의 예시인가, 아니면 **특정 자리**에 붙여달라는 건가?
-
-**해야 할 일**:
-```
-사용자: 말해보카 트로피 이미지 3개 보여줌
-→ 확인: "이 트로피를 어디에 붙여주고 싶으신가요?
-          - detail.html의 어느 위치인가요?
-          - 인기 상품 통계와 함께 사용하려는 건가요?
-          - 아니면 다른 목적인가요?"
-→ 사용자의 답변을 받은 후 진행
-```
-
-**하지 말 것**:
-- 샘플로 보여준 요소를 임의로 배치 금지
-- "트로피를 보여줬으니까 어딘가에는 들어가야지" 같은 추측으로 진행 금지
-- 사용자가 명시하지 않은 위치/용도에 사용 금지
+**If a request is ambiguous or has multiple interpretations, STOP and ask AskUserQuestion FIRST.** Do not assume or guess. Confirmation is faster than fixing wrong changes.
 
 ---
 
-## 구체적 확인 체크리스트
+## Policy 1: Clarify Design Change Targets
 
-디자인/UI 변경 요청이 들어오면 다음을 **먼저** 확인한다:
+**When users request design changes (e.g., "make text bigger", "change colors"), always confirm THREE things:**
+1. **Which file and location?** (e.g., list.html chart labels, not entire page)
+2. **What exactly changes?** (font size, text length, color — be specific)
+3. **What stays untouched?** (don't add gradients/shadows unless requested)
 
-- [ ] **대상**: 어느 파일(index.html/list.html/detail.html)?
-- [ ] **위치**: 화면의 정확히 어느 부분?
-- [ ] **내용**: 무엇을 (글자/아이콘/색상/레이아웃)?
-- [ ] **범위**: 이것만 변경하고 다른 부분은 손대지 않을 것인가?
-- [ ] **목적**: 왜 이 변경이 필요한가? (사용자 경험/가독성/의미 등)
+**Example**: User says "increase text size" → Ask "Do you mean the product names in the chart? Just enlarge the font? Leave everything else unchanged?" → Wait for answer → Execute.
 
-하나라도 불명확하면 **AskUserQuestion을 사용해서 확인하고 진행한다.**
-
----
-
-## 샘플/참고자료 다루기
-
-사용자가 다음을 제시했을 때:
-- 이미지 (말해보카 스크린샷 등)
-- 색상 샘플
-- 아이콘 또는 요소
-- 디자인 시스템 참고
-
-**반드시 물어볼 것**:
-```
-"이 [요소]를 참고해서 어디에, 무엇을 어떻게 적용하길 원하시나요?"
-```
-
-**하지 말 것**:
-- 샘플을 보고 "예쁘다 → 우리도 써야지" 하는 식의 독단적 결정
-- 샘플의 일부만 추출해서 다른 곳에 활용
-- 사용자가 원하지 않은 부분까지 모방
+**Violation to avoid**: Changing graph colors to gradients, darkening shades, or adding effects not requested. Stick to exactly what was asked.
 
 ---
 
-## 요청의 명확성 판단
+## Policy 2: Confirm Intent for Sample/Reference Elements
 
-**명확함** (바로 진행 가능):
-- "list.html의 상품 이름이 잘려서 전체 이름이 보이도록 너비를 늘려줘" ← 대상, 위치, 대상이 명확함
+**When users show design samples (e.g., Sayvoca screenshots, icons, color palettes), ALWAYS ask BEFORE using them:**
+1. **Where should this go?** (specific file, section, component)
+2. **Why this element?** (aesthetic, functional, data-related)
+3. **How much of it?** (just the icon? the whole component?)
 
-**불명확함** (확인 필요):
-- "글자수를 늘려달라" ← 어디의? 무엇을?
-- "트로피를 추가해줘" ← 어디에? 왜?
-- "색을 바꿔줄래?" ← 어느 색? 어디를? 무슨 색으로?
+**Example**: User shows trophy icon → Ask "Should the trophy appear in the sales dashboard to mark best-selling product? Or elsewhere?" → Wait for answer → Place it correctly with meaning.
 
-**불명확한 요청이 들어오면 Plan Mode를 진입하되, 제1단계(Initial Understanding)에서 AskUserQuestion을 사용해서 명확히 하고 진행한다.**
+**Violation to avoid**: Placing trophy randomly on detail.html without purpose. Using decorative elements just because they look good, not because they serve a function.
+
+---
+
+## Policy 3: Mobile-First UI Requirements
+
+**This project must be mobile-responsive. When designing or modifying UI, always ensure:**
+1. Components resize properly on screens ≤ 480px wide (use media queries)
+2. Touch targets are ≥ 44px for buttons and interactive elements
+3. Text is readable without horizontal scrolling (max-width constraints)
+
+**Test**: Preview changes on mobile (Chrome DevTools: toggle device toolbar). If it breaks layout or text is cut off, fix it before shipping.
+
+**Non-negotiable**: Every page (index.html, list.html, detail.html) must work smoothly on both desktop and mobile.
+
+---
+
+## Policy 4: Design Clarity Checklist
+
+**Before executing ANY UI/design change, confirm these in order:**
+
+- [ ] **File**: Which file(s) change? (index.html / list.html / detail.html)
+- [ ] **Location**: Exact screen region (chart labels, header, buttons)
+- [ ] **Change type**: What property? (font, color, size, spacing, layout)
+- [ ] **Scope**: Only this element? Or does it affect others?
+- [ ] **Purpose**: Why? (readability, data clarity, mobile fit, visual hierarchy)
+- [ ] **Mobile impact**: Does this break mobile layout?
+
+**If any are unclear: use AskUserQuestion before proceeding.**
+
+---
+
+## Policy 5: Request Clarity Levels
+
+**Clear requests (proceed immediately):**
+- "Expand chart labels in list.html so 'カフェラテ' (full name) displays without truncation"
+- "Center the trophy icon in detail.html header with 2em size"
+- "Make buttons tappable on mobile (min 48px height)"
+
+**Unclear requests (ask first):**
+- "Make text bigger" ← Which text? Where?
+- "Add a trophy" ← Where? For what purpose?
+- "Change colors" ← Which colors? To what?
+- "Improve the design" ← Specific improvement needed
+
+**Default behavior**: When in doubt, ask. It saves time.
+
+---
+
+## Policy 6: Sample/Reference Material Handling
+
+**If users provide design samples (images, screenshots, color palettes, icons):**
+
+1. Do NOT assume where or how to use them
+2. Ask: "Where should this appear?" and "What's the purpose?"
+3. Wait for explicit confirmation before applying
+4. Use only the parts the user approves; don't improvise
+
+**Example workflow**:
+- User shows Sayvoca screenshot → Ask clarifying questions → Get explicit answer → Apply only what was confirmed
+
+**Never**: Extract parts randomly or repurpose them elsewhere without asking.
+
+---
+
+## Policy 7: When to Enter Plan Mode
+
+**Use Plan Mode → AskUserQuestion in Initial Understanding phase when:**
+- Request is vague or has multiple valid interpretations
+- UI change affects multiple files
+- Sample/reference materials need intent clarification
+- Design impact on mobile layout is uncertain
+
+**Skip Plan Mode only for:**
+- Typo fixes (single file, obvious intent)
+- One-line logic changes (documented, clear scope)
+- Simple renames with full context
+
+---
+
+## Policy 8: Korean Language in Code Comments
+
+**Project is in Korean (CLAUDE.md, file content). When adding code:**
+- Write code in English (variable names, function logic)
+- Use Korean for UI text (customer-facing strings) only
+- Keep this AGENTS.md and CLAUDE.md in their original languages for project maintainers
+
+---
+
+## Summary for Agents
+
+Before any change:
+1. **Confirm unclear requests** via AskUserQuestion
+2. **Check mobile responsiveness** — if mobile layout breaks, fix it
+3. **Understand sample usage** — ask where and why before applying
+4. **Use the checklist** — file, location, change type, scope, purpose, mobile impact
+5. **Wait for answers** — don't guess or improvise
+
+**Speed comes from clarity, not from skipping confirmation steps.**
