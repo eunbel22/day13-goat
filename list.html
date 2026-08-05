@@ -7,18 +7,19 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  @keyframes slideInTab { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes shimmer { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
 
   body {
     font-family: "Apple SD Gothic Neo", sans-serif;
-    background: linear-gradient(135deg, #FAF8FC 0%, #F5F2FA 50%, #FDF7F7 100%);
+    background: linear-gradient(135deg, #F8F6FF 0%, #F3EFFF 50%, #EBE5F8 100%);
     min-height: 100vh;
     color: #2C2C2C;
   }
   .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 24px 16px;
+    padding: 28px 16px;
   }
   .header {
     text-align: center;
@@ -27,33 +28,32 @@
   }
   .header h1 {
     font-size: 48px;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     background: linear-gradient(135deg, #7B5BA7 0%, #B565D8 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    font-weight: 700;
-    letter-spacing: -1px;
+    font-weight: 800;
   }
   .header p {
     color: #999;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
   }
   .controls {
-    background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
-    border-radius: 16px;
-    padding: 28px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.90) 100%);
+    border-radius: 18px;
+    padding: 32px;
     margin-bottom: 32px;
-    box-shadow: 0 8px 32px rgba(123, 91, 167, 0.12);
+    box-shadow: 0 8px 32px rgba(123, 91, 167, 0.1);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(123, 91, 167, 0.1);
+    border: 1px solid rgba(123, 91, 167, 0.08);
     animation: fadeIn 0.8s ease-out;
   }
   .search-box {
     display: flex;
     gap: 12px;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
   }
   .search-input {
     flex: 1;
@@ -69,56 +69,71 @@
     outline: none;
     border-color: #7B5BA7;
     box-shadow: 0 0 0 4px rgba(123, 91, 167, 0.15);
-    transform: translateY(-2px);
   }
-  .search-input::placeholder {
-    color: #BBB;
+  .filter-section {
+    margin-bottom: 20px;
   }
   .filter-label {
-    font-size: 13px;
+    font-size: 12px;
     color: #7B5BA7;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     display: block;
     font-weight: 700;
     letter-spacing: 0.5px;
     text-transform: uppercase;
   }
-  .filter-buttons {
+  .filter-tabs {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
+    border-bottom: 2px solid #E6D9F0;
+    padding-bottom: 16px;
   }
   .filter-btn {
-    padding: 10px 20px;
-    border: 2px solid #E6D9F0;
-    background: white;
-    border-radius: 24px;
+    padding: 10px 18px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 13px;
     font-weight: 600;
+    color: #999;
     transition: all 0.3s;
-    color: #7B5BA7;
-    background: linear-gradient(135deg, #FFFFFF 0%, #FAF8FC 100%);
+    position: relative;
+    letter-spacing: 0.3px;
   }
   .filter-btn:hover {
-    border-color: #B565D8;
-    color: #B565D8;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(181, 101, 216, 0.15);
+    color: #7B5BA7;
+    background: rgba(123, 91, 167, 0.05);
   }
   .filter-btn.active {
-    background: linear-gradient(135deg, #7B5BA7 0%, #B565D8 100%);
-    color: white;
-    border-color: transparent;
-    box-shadow: 0 8px 20px rgba(123, 91, 167, 0.3);
-    transform: translateY(-2px);
+    color: #7B5BA7;
+    background: linear-gradient(135deg, rgba(123, 91, 167, 0.08) 0%, rgba(181, 101, 216, 0.05) 100%);
+  }
+  .filter-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -18px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #7B5BA7 0%, #B565D8 100%);
+    border-radius: 3px;
   }
   .meta {
     font-size: 13px;
     color: #999;
     margin-top: 18px;
     padding-top: 16px;
-    border-top: 1px dashed #E6D9F0;
+    border-top: 1px solid #E6D9F0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .meta-info {
+    display: flex;
+    gap: 12px;
+    align-items: center;
   }
   .meta a {
     color: #7B5BA7;
@@ -132,7 +147,7 @@
   .cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 20px;
+    gap: 22px;
     margin-bottom: 24px;
   }
   @media (max-width: 768px) {
@@ -161,14 +176,13 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
+    height: 5px;
     background: linear-gradient(90deg, #7B5BA7 0%, #B565D8 100%);
   }
   .card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 16px 32px rgba(123, 91, 167, 0.2);
+    box-shadow: 0 16px 32px rgba(123, 91, 167, 0.18);
     border-color: rgba(123, 91, 167, 0.2);
-    background: linear-gradient(135deg, #FFFFFF 0%, #F5F2FA 100%);
   }
   .card-header {
     display: flex;
@@ -179,10 +193,7 @@
   .card-product {
     font-size: 20px;
     font-weight: 700;
-    background: linear-gradient(135deg, #7B5BA7 0%, #B565D8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #7B5BA7;
   }
   .card-badge {
     display: inline-block;
@@ -200,17 +211,39 @@
     margin-bottom: 14px;
     font-weight: 500;
   }
-  .card-info {
+  .card-stats {
+    background: linear-gradient(135deg, rgba(123, 91, 167, 0.04) 0%, rgba(181, 101, 216, 0.04) 100%);
+    border-radius: 10px;
+    padding: 12px;
     margin-bottom: 14px;
+  }
+  .card-stat-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 12px;
+  }
+  .card-stat-row:last-child {
+    margin-bottom: 0;
+  }
+  .card-stat-label {
+    color: #999;
+    font-weight: 500;
+  }
+  .card-stat-value {
+    color: #7B5BA7;
+    font-weight: 700;
+  }
+  .card-info {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #F0E6F8;
   }
   .card-row {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     font-size: 13px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #F0E6F8;
-    align-items: center;
   }
   .card-label {
     color: #999;
@@ -219,12 +252,9 @@
   .card-value {
     color: #2C2C2C;
     font-weight: 600;
-    color: #7B5BA7;
   }
   .card-price {
-    padding-top: 14px;
-    margin-top: 8px;
-    border-top: 2px solid #E6D9F0;
+    padding-top: 12px;
     font-size: 24px;
     font-weight: 800;
     background: linear-gradient(135deg, #7B5BA7 0%, #B565D8 100%);
@@ -248,11 +278,7 @@
   .empty-state-icon {
     font-size: 64px;
     margin-bottom: 16px;
-    animation: pulse 2s infinite;
-  }
-  .empty-state-text {
-    font-size: 16px;
-    font-weight: 500;
+    animation: shimmer 1.5s ease-in-out infinite;
   }
 </style>
 </head>
@@ -273,9 +299,9 @@
         >
       </div>
 
-      <div>
-        <label class="filter-label">⏰ 기간 필터</label>
-        <div class="filter-buttons">
+      <div class="filter-section">
+        <label class="filter-label">⏰ 기간별 필터</label>
+        <div class="filter-tabs">
           <button class="filter-btn active" data-filter="all">📊 전체</button>
           <button class="filter-btn" data-filter="today">📅 오늘</button>
           <button class="filter-btn" data-filter="yesterday">📆 어제</button>
@@ -284,7 +310,10 @@
       </div>
 
       <div class="meta">
-        <span id="result-count"></span> · <a href="index.html">✏️ 주문 등록하기</a>
+        <div class="meta-info">
+          <span id="result-count"></span>
+          <a href="index.html">✏️ 주문 등록하기</a>
+        </div>
       </div>
     </div>
 
@@ -339,11 +368,14 @@ function render(filtered) {
     document.getElementById('content').innerHTML = `
       <div class="empty-state">
         <div class="empty-state-icon">📭</div>
-        <div class="empty-state-text">아직 주문이 없습니다</div>
+        <div style="font-size: 16px; font-weight: 500;">아직 주문이 없습니다</div>
       </div>
     `;
     return;
   }
+
+  const totalPrice = filtered.reduce((sum, r) => sum + r.total_price, 0);
+  const totalQty = filtered.reduce((sum, r) => sum + r.quantity, 0);
 
   document.getElementById('content').innerHTML = filtered.map((r, idx) => {
     const date = new Date(r.purchased_at);
@@ -365,23 +397,25 @@ function render(filtered) {
           <div class="card-badge">#${r.id}</div>
         </div>
         <div class="card-buyer">👤 ${r.buyer_name}</div>
-        <div class="card-info">
-          <div class="card-row">
-            <span class="card-label">수량</span>
-            <span class="card-value">${r.quantity}개</span>
+
+        <div class="card-stats">
+          <div class="card-stat-row">
+            <span class="card-stat-label">수량</span>
+            <span class="card-stat-value">${r.quantity}개</span>
           </div>
-          <div class="card-row">
-            <span class="card-label">단가</span>
-            <span class="card-value">${r.price_per_unit.toLocaleString('ko-KR')}원</span>
+          <div class="card-stat-row">
+            <span class="card-stat-label">단가</span>
+            <span class="card-stat-value">${r.price_per_unit.toLocaleString('ko-KR')}원</span>
           </div>
         </div>
+
         <div class="card-price">${r.total_price.toLocaleString('ko-KR')}원</div>
         <div class="card-date">${dateStr} ${timeStr}</div>
       </div>
     `;
   }).join('');
 
-  document.getElementById('result-count').textContent = `✨ 총 ${filtered.length}건`;
+  document.getElementById('result-count').textContent = `✨ ${filtered.length}건 · 총 ${totalPrice.toLocaleString('ko-KR')}원`;
 }
 
 function applyFilters() {

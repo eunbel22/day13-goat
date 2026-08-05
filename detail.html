@@ -6,12 +6,12 @@
 <title>영수증</title>
 <style>
   @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes shine { 0%, 100% { text-shadow: none; } 50% { text-shadow: 0 0 10px rgba(181, 101, 216, 0.5); } }
-  @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-4px); } }
+  @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+  @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-6px); } }
 
   body {
-    font-family: "Courier New", monospace;
-    background: linear-gradient(135deg, #FAF8FC 0%, #F5F2FA 50%, #E6D9F0 100%);
+    font-family: "Apple SD Gothic Neo", sans-serif;
+    background: linear-gradient(135deg, #7B5BA7 0%, #9B7BC4 100%);
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -21,89 +21,92 @@
   }
   .receipt-container {
     width: 100%;
-    max-width: 460px;
+    max-width: 480px;
   }
   .receipt {
-    background: linear-gradient(135deg, #FFFFFF 0%, #FAFBFF 100%);
-    border: 3px solid #7B5BA7;
-    padding: 32px;
+    background: linear-gradient(135deg, #FFE5B4 0%, #FFDAB9 50%, #FFD9A8 100%);
+    border: 3px solid #FFB84D;
+    padding: 36px;
     text-align: center;
     box-shadow:
-      0 20px 60px rgba(123, 91, 167, 0.3),
-      0 0 40px rgba(181, 101, 216, 0.2);
-    border-radius: 12px;
+      0 20px 60px rgba(255, 152, 0, 0.3),
+      0 0 60px rgba(255, 184, 77, 0.2);
+    border-radius: 16px;
     position: relative;
     animation: slideDown 0.6s ease-out;
   }
   .receipt::before {
     content: '';
     position: absolute;
-    top: -10px;
+    top: -14px;
     left: 50%;
     transform: translateX(-50%);
-    width: 40px;
-    height: 20px;
-    background: linear-gradient(135deg, #7B5BA7 0%, #B565D8 100%);
-    border-radius: 0 0 20px 20px;
+    width: 50px;
+    height: 28px;
+    background: linear-gradient(135deg, #FFB84D 0%, #FFA726 100%);
+    border-radius: 0 0 24px 24px;
   }
   .receipt::after {
     content: '';
     position: absolute;
-    bottom: -10px;
+    bottom: -14px;
     left: 50%;
     transform: translateX(-50%);
-    width: 40px;
-    height: 20px;
-    background: linear-gradient(135deg, #7B5BA7 0%, #B565D8 100%);
-    border-radius: 20px 20px 0 0;
+    width: 50px;
+    height: 28px;
+    background: linear-gradient(135deg, #FFB84D 0%, #FFA726 100%);
+    border-radius: 24px 24px 0 0;
   }
   .header {
-    margin-bottom: 24px;
-    border-bottom: 3px dashed #B565D8;
+    margin-bottom: 28px;
+    border-bottom: 3px dashed #FFB84D;
     padding-bottom: 16px;
+  }
+  .trophy {
+    font-size: 48px;
+    margin-bottom: 12px;
+    animation: bounce 2s infinite;
   }
   .store-name {
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: 6px;
-    color: #7B5BA7;
-    animation: shine 2s infinite;
+    margin-bottom: 4px;
+    color: #D97F00;
     letter-spacing: 1px;
   }
   .store-tagline {
     font-size: 12px;
-    color: #999;
-    margin-bottom: 10px;
-    font-family: "Apple SD Gothic Neo", sans-serif;
-    letter-spacing: 1px;
+    color: #C67C00;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
     text-transform: uppercase;
+    font-weight: 600;
   }
   .receipt-title {
     font-size: 13px;
-    color: #7B5BA7;
-    margin-bottom: 10px;
-    letter-spacing: 4px;
+    color: #B8860B;
+    margin-bottom: 8px;
+    letter-spacing: 3px;
     font-weight: bold;
   }
   .receipt-date {
     font-size: 12px;
-    color: #666;
-    font-family: "Apple SD Gothic Neo", sans-serif;
+    color: #A0522D;
     font-weight: 500;
   }
   .section {
     margin: 20px 0;
-    border-bottom: 3px dashed #B565D8;
+    border-bottom: 3px dashed #FFB84D;
     padding-bottom: 16px;
   }
   .section:last-of-type {
-    border-bottom: 3px solid #7B5BA7;
+    border-bottom: 3px solid #FFB84D;
   }
   .item-row {
     display: flex;
     justify-content: space-between;
     font-size: 13px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     align-items: flex-start;
     gap: 8px;
     font-weight: 500;
@@ -111,88 +114,103 @@
   .item-name {
     text-align: left;
     flex: 1;
-    color: #7B5BA7;
+    color: #8B4513;
   }
   .item-qty {
     text-align: right;
     min-width: 35px;
-    color: #666;
+    color: #A0522D;
   }
   .item-price {
     text-align: right;
     min-width: 85px;
     font-weight: bold;
-    color: #2C2C2C;
+    color: #8B4513;
   }
   .divider {
-    border-top: 2px dashed #E6D9F0;
+    border-top: 2px dashed #FFB84D;
     margin: 12px 0;
   }
   .total-section {
-    margin: 16px 0;
+    margin: 18px 0;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 16px;
+    border-radius: 12px;
   }
   .total-label {
-    font-size: 13px;
+    font-size: 12px;
     margin-bottom: 10px;
     font-weight: 600;
-    color: #666;
+    color: #A0522D;
+    letter-spacing: 0.5px;
   }
   .total-amount {
-    font-size: 32px;
-    font-weight: bold;
-    margin: 12px 0;
-    letter-spacing: 2px;
-    background: linear-gradient(135deg, #7B5BA7 0%, #B565D8 100%);
+    font-size: 42px;
+    font-weight: 900;
+    margin: 14px 0;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, #D97F00 0%, #B8860B 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: float 2s ease-in-out infinite;
+    animation: float 2.5s ease-in-out infinite;
+  }
+  .won-symbol {
+    font-size: 24px;
+    margin-left: 4px;
   }
   .footer-info {
     margin: 16px 0;
     text-align: left;
-    font-size: 12px;
-    color: #555;
-    font-family: "Apple SD Gothic Neo", sans-serif;
+    font-size: 13px;
+    color: #654321;
   }
   .footer-info div {
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     font-weight: 500;
+  }
+  .footer-icon {
+    display: inline-block;
+    width: 20px;
+    text-align: center;
   }
   .footer-message {
     margin-top: 18px;
     padding-top: 14px;
-    border-top: 3px dashed #B565D8;
-    font-size: 12px;
-    color: #7B5BA7;
-    font-family: "Apple SD Gothic Neo", sans-serif;
+    border-top: 3px dashed #FFB84D;
+    font-size: 13px;
+    color: #8B4513;
     line-height: 1.8;
     font-weight: 600;
     letter-spacing: 0.5px;
   }
   .promo {
-    background: linear-gradient(135deg, #F0E6F8 0%, #E6D9F0 100%);
-    border: 2px solid #B565D8;
-    border-radius: 8px;
-    padding: 16px;
-    margin-top: 20px;
+    background: linear-gradient(135deg, rgba(255, 200, 100, 0.4) 0%, rgba(255, 182, 77, 0.4) 100%);
+    border: 2px solid #FFB84D;
+    border-radius: 12px;
+    padding: 18px;
+    margin-top: 22px;
     font-size: 12px;
-    color: #7B5BA7;
-    font-family: "Apple SD Gothic Neo", sans-serif;
-    line-height: 1.7;
-    box-shadow: 0 4px 12px rgba(181, 101, 216, 0.15);
+    color: #8B4513;
+    line-height: 1.8;
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.15);
   }
   .promo-title {
     font-weight: 700;
-    margin-bottom: 8px;
-    color: #7B5BA7;
+    margin-bottom: 10px;
+    color: #D97F00;
     letter-spacing: 0.5px;
+    font-size: 13px;
+  }
+  .promo-icon {
+    display: inline-block;
+    margin: 0 2px;
   }
   .back-button {
     display: block;
     margin-top: 32px;
     padding: 14px 32px;
-    background: linear-gradient(135deg, #7B5BA7 0%, #B565D8 100%);
+    background: linear-gradient(135deg, #7B5BA7 0%, #9B7BC4 100%);
     color: white;
     text-decoration: none;
     border-radius: 12px;
@@ -208,23 +226,13 @@
   }
   .back-button:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(181, 101, 216, 0.4);
-  }
-  .back-button:active {
-    transform: translateY(-1px);
+    box-shadow: 0 12px 32px rgba(123, 91, 167, 0.4);
   }
   .error {
     color: #d32f2f;
-    font-family: "Apple SD Gothic Neo", sans-serif;
     padding: 40px 20px;
     text-align: center;
     font-size: 16px;
-  }
-  .decoration {
-    font-size: 20px;
-    letter-spacing: 8px;
-    color: #E6D9F0;
-    margin: 16px 0;
   }
 </style>
 </head>
@@ -267,17 +275,16 @@ async function load() {
     document.getElementById('content').innerHTML = `
       <div class="receipt">
         <div class="header">
+          <div class="trophy">🏆</div>
           <div class="store-name">☕ 커피 자판기 ☕</div>
-          <div class="store-tagline">✦ Fresh Coffee, Always Ready ✦</div>
-          <div class="receipt-title">━━ 영 수 증 ━━</div>
+          <div class="store-tagline">Fresh Coffee, Always Ready</div>
+          <div class="receipt-title">─── 영 수 증 ───</div>
           <div class="receipt-date">📅 ${dateStr}  ⏰ ${timeStr}</div>
         </div>
 
-        <div class="decoration">✦ ✦ ✦</div>
-
         <div class="section">
           <div class="item-row">
-            <div class="item-name"><strong>상품</strong></div>
+            <div class="item-name"><strong>상품명</strong></div>
             <div class="item-qty"><strong>수량</strong></div>
             <div class="item-price"><strong>가격</strong></div>
           </div>
@@ -285,38 +292,36 @@ async function load() {
           <div class="item-row">
             <div class="item-name">${emoji} ${data.product}</div>
             <div class="item-qty">${data.quantity}개</div>
-            <div class="item-price">${data.price_per_unit.toLocaleString('ko-KR')}원</div>
+            <div class="item-price">${data.price_per_unit.toLocaleString('ko-KR')}</div>
           </div>
         </div>
 
         <div class="total-section">
-          <div class="total-label">━━ 총 ${data.quantity}개 ━━</div>
+          <div class="total-label">📊 총 ${data.quantity}개 구매</div>
           <div class="divider"></div>
-          <div class="total-label">합 계</div>
-          <div class="total-amount">₩${data.total_price.toLocaleString('ko-KR')}</div>
+          <div class="total-label">💰 최종 결제액</div>
+          <div class="total-amount">${data.total_price.toLocaleString('ko-KR')}<span class="won-symbol">원</span></div>
         </div>
-
-        <div class="decoration">✦ ✦ ✦</div>
 
         <div class="section">
           <div class="footer-info">
-            <div>👤 구매자 : ${data.buyer_name}</div>
-            <div>🧾 주문번호 : #${data.id}</div>
+            <div><span class="footer-icon">👤</span> 구매자 : ${data.buyer_name}</div>
+            <div><span class="footer-icon">🧾</span> 주문번호 : #${data.id}</div>
           </div>
         </div>
 
         <div class="footer-message">
-          🌟 감사합니다! 🌟
+          ⭐ 감사합니다! ⭐
           <br><br>
           언제나 맛있는 커피로 만나요 ☕
         </div>
 
         <div class="promo">
           <div class="promo-title">☕ 프리미엄 커피</div>
-          매일 신선하게 준비한 최고의 커피<br>
-          🕐 매일 아침 8시 ~ 저녁 6시<br>
+          <span class="promo-icon">✨</span> 매일 신선하게 준비한 최고의 커피<br>
+          <span class="promo-icon">🕐</span> 매일 아침 8시 ~ 저녁 6시<br>
           <br>
-          ⭐ 더 자주 방문해주세요!
+          <span class="promo-icon">⭐</span> <strong>더 자주 방문해주세요!</strong>
         </div>
       </div>
     `;
