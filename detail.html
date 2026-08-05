@@ -7,44 +7,61 @@
 <style>
   body {
     font-family: "Courier New", monospace;
-    max-width: 400px;
-    margin: 20px auto;
-    padding: 16px;
-    color: #000;
-    background: #fff;
+    background: linear-gradient(135deg, #FAF8FC 0%, #F5F2FA 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: #2C2C2C;
+  }
+  .receipt-container {
+    width: 100%;
+    max-width: 420px;
   }
   .receipt {
-    border: 2px solid #000;
-    padding: 20px;
+    background: white;
+    border: 2px solid #7B5BA7;
+    padding: 24px;
     text-align: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 24px rgba(123, 91, 167, 0.15);
+    border-radius: 8px;
   }
   .header {
     margin-bottom: 20px;
-    border-bottom: 2px dashed #000;
+    border-bottom: 2px dashed #D4A8E6;
     padding-bottom: 12px;
   }
   .store-name {
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 4px;
+    color: #7B5BA7;
+  }
+  .store-tagline {
+    font-size: 11px;
+    color: #999;
+    margin-bottom: 8px;
+    font-family: "Apple SD Gothic Neo", sans-serif;
   }
   .receipt-title {
     font-size: 12px;
     color: #666;
     margin-bottom: 8px;
+    letter-spacing: 3px;
   }
   .receipt-date {
     font-size: 11px;
     color: #888;
+    font-family: "Apple SD Gothic Neo", sans-serif;
   }
   .section {
     margin: 16px 0;
-    border-bottom: 2px dashed #000;
+    border-bottom: 2px dashed #D4A8E6;
     padding-bottom: 12px;
   }
   .section:last-of-type {
-    border-bottom: 2px solid #000;
+    border-bottom: 2px solid #7B5BA7;
   }
   .item-row {
     display: flex;
@@ -68,7 +85,7 @@
     font-weight: bold;
   }
   .divider {
-    border-top: 2px dashed #000;
+    border-top: 2px dashed #D4A8E6;
     margin: 8px 0;
   }
   .total-section {
@@ -79,43 +96,71 @@
     margin-bottom: 8px;
   }
   .total-amount {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: bold;
     margin: 8px 0;
     letter-spacing: 1px;
+    color: #7B5BA7;
   }
-  .footer {
-    margin-top: 20px;
+  .footer-info {
+    margin: 16px 0;
+    text-align: left;
+    font-size: 12px;
+    color: #555;
+  }
+  .footer-info div {
+    margin-bottom: 4px;
+    font-family: "Apple SD Gothic Neo", sans-serif;
+  }
+  .footer-message {
+    margin-top: 16px;
     padding-top: 12px;
+    border-top: 2px dashed #D4A8E6;
     font-size: 11px;
     color: #888;
-    text-align: center;
+    font-family: "Apple SD Gothic Neo", sans-serif;
+    line-height: 1.6;
   }
-  .back-link {
-    display: inline-block;
+  .promo {
+    background: linear-gradient(135deg, #F0E6F8 0%, #E6D9F0 100%);
+    border-radius: 6px;
+    padding: 12px;
     margin-top: 16px;
-    padding: 8px 16px;
-    background: #f4f2ee;
-    border: 1px solid #ddd;
-    color: #0d6d64;
+    font-size: 11px;
+    color: #7B5BA7;
+    font-family: "Apple SD Gothic Neo", sans-serif;
+    line-height: 1.5;
+  }
+  .back-button {
+    display: block;
+    margin-top: 24px;
+    padding: 12px 24px;
+    background: #7B5BA7;
+    color: white;
     text-decoration: none;
-    border-radius: 4px;
+    border-radius: 8px;
     font-family: "Apple SD Gothic Neo", sans-serif;
     font-size: 14px;
+    text-align: center;
+    transition: all 0.3s;
   }
-  .back-link:hover {
-    background: #ede9e0;
+  .back-button:hover {
+    background: #6B4A94;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(123, 91, 167, 0.2);
   }
   .error {
     color: #d32f2f;
     font-family: "Apple SD Gothic Neo", sans-serif;
+    padding: 20px;
+    text-align: center;
   }
 </style>
 </head>
 <body>
-  <div id="content"></div>
-  <div style="text-align: center;">
-    <a href="list.html" class="back-link">← 목록으로</a>
+  <div class="receipt-container">
+    <div id="content"></div>
+    <a href="list.html" class="back-button">← 목록으로</a>
   </div>
 
 <script>
@@ -143,7 +188,8 @@ async function load() {
       <div class="receipt">
         <div class="header">
           <div class="store-name">☕ 커피 자판기</div>
-          <div class="receipt-title">=== 영 수 증 ===</div>
+          <div class="store-tagline">Fresh Coffee, Always Ready</div>
+          <div class="receipt-title">= 영 수 증 =</div>
           <div class="receipt-date">${dateStr} ${timeStr}</div>
         </div>
 
@@ -169,15 +215,22 @@ async function load() {
         </div>
 
         <div class="section">
-          <div style="font-size: 12px; text-align: left;">
-            <div style="margin-bottom: 4px;">구매자: ${data.buyer_name}</div>
-            <div style="margin-bottom: 4px;">주문번호: #${data.id}</div>
-            <div>감사합니다!</div>
+          <div class="footer-info">
+            <div>👤 구매자: ${data.buyer_name}</div>
+            <div>📋 주문번호: #${data.id}</div>
           </div>
         </div>
 
-        <div class="footer">
-          ≪ 다시 방문해 주세요 ≫
+        <div class="footer-message">
+          감사합니다!
+          <br>
+          다시 방문해 주세요 ☕
+        </div>
+
+        <div class="promo">
+          🌟 <strong>프리미엄 커피</strong><br>
+          매일 신선하게 준비한 최고의 커피<br>
+          <strong style="color: #7B5BA7;">매일 아침 8시부터 저녁 6시까지</strong>
         </div>
       </div>
     `;
