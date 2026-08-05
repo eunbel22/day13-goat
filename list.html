@@ -11,6 +11,8 @@
   table { border-collapse: collapse; width: 100%; }
   th, td { border: 1px solid #ddd; padding: 8px 12px; font-size: 14px; text-align: left; }
   th { background: #f4f2ee; }
+  tbody tr { cursor: pointer; }
+  tbody tr:hover { background: #f9f8f5; }
   td.num { text-align: right; font-variant-numeric: tabular-nums; }
   a { color: #0d6d64; }
 </style>
@@ -33,7 +35,7 @@ async function load() {
   const rows = await res.json();
   document.getElementById('count').textContent = '총 ' + rows.length + '건';
   document.getElementById('rows').innerHTML = rows.map(r =>
-    `<tr>
+    `<tr onclick="location.href='detail.html?id=${r.id}'">
        <td>${r.id}</td>
        <td>${r.buyer_name}</td>
        <td>${r.product}</td>

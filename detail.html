@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>판매 상세</title>
+<style>
+  body { font-family: "Apple SD Gothic Neo", sans-serif; max-width: 760px; margin: 40px auto; padding: 0 16px; color: #1b1d21; }
+  h1 { font-size: 24px; }
+  .meta { color: #666; font-size: 14px; margin-bottom: 24px; }
+  .detail { background: #f4f2ee; padding: 20px; border-radius: 8px; }
+  .detail-row { display: flex; margin-bottom: 16px; }
+  .detail-row:last-child { margin-bottom: 0; }
+  .label { width: 100px; font-weight: 600; color: #666; }
+  .value { flex: 1; }
+  .error { color: #d32f2f; }
+  a { color: #0d6d64; }
+</style>
+</head>
+<body>
+  <h1 id="title">판매 상세</h1>
+  <p class="meta"><a href="list.html">← 목록으로</a></p>
+  <div id="content"></div>
+
+<script>
+async function load() {
+  const id = new URLSearchParams(location.search).get('id');
+  if (!id) {
+    document.getElementById('content').innerHTML = '<p class="error">ID가 없습니다</p>';
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/list?id=${id}`);
+    if (!res.ok) {
+      document.getElementById('content').innerHTML = '<p class="error">정보를 불러올 수 없습니다</p>';
+      return;
+    }
+    const data = await res.json();
+    document.title = `판매 상세 - ${data.product}`;
+    document.getElementById('title').textContent = `${data.product} 상세`;
+
+    const date = new Date(data.purchased_at).toLocaleString('ko-KR');
+    document.getElementById('content').innerHTML = `
+      <div class="detail">
+        <div class="detail-row">
+          <div class="label">구매자</div>
+          <div class="value">${data.buyer_name}</div>
+        </div>
+        <div class="detail-row">
+          <div class="label">상품</div>
+          <div class="value">${data.product}</div>
+        </div>
+        <div class="detail-row">
+          <div class="label">수량</div>
+          <div class="value">${data.quantity}개</div>
+        </div>
+        <div class="detail-row">
+          <div class="label">단가</div>
+          <div class="value">${data.price_per_unit.toLocaleString('ko-KR')}원</div>
+        </div>
+        <div class="detail-row">
+          <div class="label">합계</div>
+          <div class="value" style="font-size: 18px; font-weight: 600; color: #0d6d64;">${data.total_price.toLocaleString('ko-KR')}원</div>
+        </div>
+        <div class="detail-row">
+          <div class="label">구매 시각</div>
+          <div class="value">${date}</div>
+        </div>
+      </div>
+    `;
+  } catch (e) {
+    document.getElementById('content').innerHTML = `<p class="error">오류: ${e.message}</p>`;
+  }
+}
+load();
+</script>
+</body>
+</html>
