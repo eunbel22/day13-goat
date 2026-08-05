@@ -5,45 +5,349 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>판매 현황</title>
 <style>
-  body { font-family: "Apple SD Gothic Neo", sans-serif; max-width: 760px; margin: 40px auto; padding: 0 16px; color: #1b1d21; }
-  h1 { font-size: 24px; }
-  .meta { color: #666; font-size: 14px; margin-bottom: 16px; }
-  table { border-collapse: collapse; width: 100%; }
-  th, td { border: 1px solid #ddd; padding: 8px 12px; font-size: 14px; text-align: left; }
-  th { background: #f4f2ee; }
-  tbody tr { cursor: pointer; }
-  tbody tr:hover { background: #f9f8f5; }
-  td.num { text-align: right; font-variant-numeric: tabular-nums; }
-  a { color: #0d6d64; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Apple SD Gothic Neo", sans-serif;
+    background: linear-gradient(135deg, #F5F3F0 0%, #FAF8F6 100%);
+    min-height: 100vh;
+    color: #2C2C2C;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 16px;
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .header h1 {
+    font-size: 32px;
+    margin-bottom: 8px;
+    color: #5D4E37;
+  }
+  .header p {
+    color: #999;
+    font-size: 14px;
+  }
+  .controls {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .search-box {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .search-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid #E0D5CC;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.3s;
+  }
+  .search-input:focus {
+    outline: none;
+    border-color: #D4A574;
+    box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.1);
+  }
+  .filter-label {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 8px;
+    display: block;
+    font-weight: 600;
+  }
+  .filter-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    padding: 8px 16px;
+    border: 1px solid #E0D5CC;
+    background: white;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.3s;
+    color: #666;
+  }
+  .filter-btn:hover {
+    border-color: #D4A574;
+    color: #5D4E37;
+  }
+  .filter-btn.active {
+    background: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
+  }
+  .meta {
+    font-size: 12px;
+    color: #999;
+    margin-top: 16px;
+  }
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 768px) {
+    .cards-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-left: 4px solid #D4A574;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+    border-left-color: #4CAF50;
+  }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .card-product {
+    font-size: 18px;
+    font-weight: 600;
+    color: #5D4E37;
+  }
+  .card-id {
+    font-size: 12px;
+    color: #999;
+    background: #F5F3F0;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  .card-info {
+    margin-bottom: 12px;
+  }
+  .card-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+  .card-label {
+    color: #999;
+  }
+  .card-value {
+    color: #2C2C2C;
+    font-weight: 500;
+  }
+  .card-buyer {
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+  .card-price {
+    padding-top: 12px;
+    border-top: 1px solid #E0D5CC;
+    font-size: 20px;
+    font-weight: 700;
+    color: #4CAF50;
+  }
+  .card-date {
+    font-size: 12px;
+    color: #999;
+    margin-top: 8px;
+  }
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+  }
+  .empty-state-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+  .link-home {
+    display: inline-block;
+    margin-top: 24px;
+    padding: 12px 24px;
+    background: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s;
+  }
+  .link-home:hover {
+    background: #45a049;
+  }
 </style>
 </head>
 <body>
-  <h1>커피 자판기 판매 현황</h1>
-  <p class="meta">최신 구매가 맨 위에 옵니다. <span id="count"></span> · <a href="index.html">주문 등록하기</a></p>
-  <table>
-    <thead><tr><th>#</th><th>구매자</th><th>상품</th><th>수량</th><th>금액</th><th>구매 시각</th></tr></thead>
-    <tbody id="rows"></tbody>
-  </table>
+  <div class="container">
+    <div class="header">
+      <h1>☕ 판매 현황</h1>
+      <p id="count"></p>
+    </div>
+
+    <div class="controls">
+      <div class="search-box">
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="고객명 또는 상품명으로 검색..."
+        >
+      </div>
+
+      <div>
+        <label class="filter-label">기간 필터</label>
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-filter="all">전체</button>
+          <button class="filter-btn" data-filter="today">오늘</button>
+          <button class="filter-btn" data-filter="yesterday">어제</button>
+          <button class="filter-btn" data-filter="week">이번주</button>
+        </div>
+      </div>
+
+      <div class="meta">
+        <span id="result-count"></span> · <a href="index.html">주문 등록하기</a>
+      </div>
+    </div>
+
+    <div id="content" class="cards-grid"></div>
+  </div>
 
 <script>
-async function load() {
-  const res = await fetch('/api/list');
-  if (!res.ok) {
-    document.getElementById('count').textContent = '불러오기에 실패했습니다';
+let allRows = [];
+
+function getToday() {
+  const d = new Date();
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+}
+
+function getDateOnly(dateStr) {
+  const d = new Date(dateStr);
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+}
+
+function filterByDate(rows, filter) {
+  const today = getToday();
+  return rows.filter(r => {
+    const rowDate = getDateOnly(r.purchased_at);
+    switch(filter) {
+      case 'today':
+        return rowDate.getTime() === today.getTime();
+      case 'yesterday':
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+        return rowDate.getTime() === yesterday.getTime();
+      case 'week':
+        const weekStart = new Date(today);
+        weekStart.setDate(weekStart.getDate() - today.getDay());
+        return rowDate >= weekStart && rowDate <= today;
+      default:
+        return true;
+    }
+  });
+}
+
+function filterBySearch(rows, query) {
+  if (!query) return rows;
+  const lower = query.toLowerCase();
+  return rows.filter(r =>
+    r.buyer_name.toLowerCase().includes(lower) ||
+    r.product.toLowerCase().includes(lower)
+  );
+}
+
+function render(filtered) {
+  if (filtered.length === 0) {
+    document.getElementById('content').innerHTML = `
+      <div style="grid-column: 1 / -1;">
+        <div class="empty-state">
+          <div class="empty-state-icon">📭</div>
+          <p>주문이 없습니다</p>
+        </div>
+      </div>
+    `;
     return;
   }
-  const rows = await res.json();
-  document.getElementById('count').textContent = '총 ' + rows.length + '건';
-  document.getElementById('rows').innerHTML = rows.map(r =>
-    `<tr onclick="location.href='detail.html?id=${r.id}'">
-       <td>${r.id}</td>
-       <td>${r.buyer_name}</td>
-       <td>${r.product}</td>
-       <td class="num">${r.quantity}</td>
-       <td class="num">${r.total_price.toLocaleString('ko-KR')}원</td>
-       <td>${new Date(r.purchased_at).toLocaleString('ko-KR')}</td>
-     </tr>`).join('');
+
+  document.getElementById('content').innerHTML = filtered.map(r => {
+    const date = new Date(r.purchased_at);
+    const dateStr = date.toLocaleDateString('ko-KR');
+    const timeStr = date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+    return `
+      <div class="card" onclick="location.href='detail.html?id=${r.id}'">
+        <div class="card-header">
+          <div class="card-product">${r.product}</div>
+          <div class="card-id">#${r.id}</div>
+        </div>
+        <div class="card-buyer">👤 ${r.buyer_name}</div>
+        <div class="card-info">
+          <div class="card-row">
+            <span class="card-label">수량</span>
+            <span class="card-value">${r.quantity}개</span>
+          </div>
+          <div class="card-row">
+            <span class="card-label">단가</span>
+            <span class="card-value">${r.price_per_unit.toLocaleString('ko-KR')}원</span>
+          </div>
+        </div>
+        <div class="card-price">${r.total_price.toLocaleString('ko-KR')}원</div>
+        <div class="card-date">${dateStr} ${timeStr}</div>
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('result-count').textContent = `총 ${filtered.length}건`;
 }
+
+function applyFilters() {
+  const searchQuery = document.getElementById('searchInput').value;
+  const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+
+  let filtered = filterByDate(allRows, activeFilter);
+  filtered = filterBySearch(filtered, searchQuery);
+
+  render(filtered);
+}
+
+async function load() {
+  try {
+    const res = await fetch('/api/list');
+    if (!res.ok) {
+      document.getElementById('content').innerHTML = '<p style="color: #d32f2f;">불러오기에 실패했습니다</p>';
+      return;
+    }
+    allRows = await res.json();
+    document.getElementById('count').textContent = `최신 구매가 맨 위에 옵니다`;
+    applyFilters();
+  } catch (e) {
+    document.getElementById('content').innerHTML = `<p style="color: #d32f2f;">오류: ${e.message}</p>`;
+  }
+}
+
+document.getElementById('searchInput').addEventListener('input', applyFilters);
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    applyFilters();
+  });
+});
+
 load();
 </script>
 </body>
