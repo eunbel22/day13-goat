@@ -6,8 +6,7 @@
 <title>영수증</title>
 <style>
   @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
-  @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-6px); } }
+  @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-4px); } }
 
   body {
     font-family: "Apple SD Gothic Neo", sans-serif;
@@ -21,212 +20,122 @@
   }
   .receipt-container {
     width: 100%;
-    max-width: 480px;
+    max-width: 440px;
   }
   .receipt {
-    background: linear-gradient(135deg, #FFE5B4 0%, #FFDAB9 50%, #FFD9A8 100%);
-    border: 3px solid #FFB84D;
-    padding: 36px;
-    text-align: center;
-    box-shadow:
-      0 20px 60px rgba(255, 152, 0, 0.3),
-      0 0 60px rgba(255, 184, 77, 0.2);
-    border-radius: 16px;
-    position: relative;
+    background: white;
+    border-left: 6px solid #7B5BA7;
+    padding: 32px;
+    box-shadow: 0 12px 40px rgba(123, 91, 167, 0.2);
+    border-radius: 8px;
     animation: slideDown 0.6s ease-out;
   }
-  .receipt::before {
-    content: '';
-    position: absolute;
-    top: -14px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px;
-    height: 28px;
-    background: linear-gradient(135deg, #FFB84D 0%, #FFA726 100%);
-    border-radius: 0 0 24px 24px;
-  }
-  .receipt::after {
-    content: '';
-    position: absolute;
-    bottom: -14px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px;
-    height: 28px;
-    background: linear-gradient(135deg, #FFB84D 0%, #FFA726 100%);
-    border-radius: 24px 24px 0 0;
-  }
   .header {
-    margin-bottom: 28px;
-    border-bottom: 3px dashed #FFB84D;
+    margin-bottom: 24px;
     padding-bottom: 16px;
-  }
-  .trophy {
-    font-size: 48px;
-    margin-bottom: 12px;
-    animation: bounce 2s infinite;
+    border-bottom: 2px solid #E6D9F0;
+    text-align: center;
   }
   .store-name {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
     margin-bottom: 4px;
-    color: #D97F00;
-    letter-spacing: 1px;
-  }
-  .store-tagline {
-    font-size: 12px;
-    color: #C67C00;
-    margin-bottom: 12px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    font-weight: 600;
+    color: #7B5BA7;
   }
   .receipt-title {
-    font-size: 13px;
-    color: #B8860B;
-    margin-bottom: 8px;
-    letter-spacing: 3px;
-    font-weight: bold;
+    font-size: 12px;
+    color: #999;
+    margin-top: 12px;
+    letter-spacing: 2px;
   }
   .receipt-date {
     font-size: 12px;
-    color: #A0522D;
-    font-weight: 500;
+    color: #BBB;
+    margin-top: 6px;
   }
   .section {
     margin: 20px 0;
-    border-bottom: 3px dashed #FFB84D;
+    border-bottom: 1px solid #E6D9F0;
     padding-bottom: 16px;
   }
   .section:last-of-type {
-    border-bottom: 3px solid #FFB84D;
+    border-bottom: none;
   }
   .item-row {
     display: flex;
     justify-content: space-between;
     font-size: 13px;
-    margin-bottom: 12px;
-    align-items: flex-start;
+    margin-bottom: 8px;
     gap: 8px;
-    font-weight: 500;
   }
   .item-name {
     text-align: left;
     flex: 1;
-    color: #8B4513;
+    color: #666;
   }
   .item-qty {
     text-align: right;
-    min-width: 35px;
-    color: #A0522D;
+    min-width: 30px;
+    color: #666;
   }
   .item-price {
     text-align: right;
-    min-width: 85px;
-    font-weight: bold;
-    color: #8B4513;
+    min-width: 70px;
+    font-weight: 600;
+    color: #2C2C2C;
   }
   .divider {
-    border-top: 2px dashed #FFB84D;
-    margin: 12px 0;
-  }
-  .total-section {
-    margin: 18px 0;
-    background: rgba(255, 255, 255, 0.5);
-    padding: 16px;
-    border-radius: 12px;
+    border-top: 1px dashed #E6D9F0;
+    margin: 10px 0;
   }
   .total-label {
     font-size: 12px;
-    margin-bottom: 10px;
-    font-weight: 600;
-    color: #A0522D;
-    letter-spacing: 0.5px;
-  }
-  .total-amount {
-    font-size: 42px;
-    font-weight: 900;
-    margin: 14px 0;
-    letter-spacing: 1px;
-    background: linear-gradient(135deg, #D97F00 0%, #B8860B 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: float 2.5s ease-in-out infinite;
-  }
-  .won-symbol {
-    font-size: 24px;
-    margin-left: 4px;
-  }
-  .footer-info {
-    margin: 16px 0;
-    text-align: left;
-    font-size: 13px;
-    color: #654321;
-  }
-  .footer-info div {
+    color: #999;
     margin-bottom: 8px;
     font-weight: 500;
   }
-  .footer-icon {
-    display: inline-block;
-    width: 20px;
-    text-align: center;
+  .total-amount {
+    font-size: 32px;
+    font-weight: 800;
+    margin: 10px 0 16px;
+    color: #7B5BA7;
+    animation: float 2.5s ease-in-out infinite;
+  }
+  .footer-info {
+    text-align: left;
+    font-size: 12px;
+    color: #666;
+    line-height: 1.8;
   }
   .footer-message {
-    margin-top: 18px;
-    padding-top: 14px;
-    border-top: 3px dashed #FFB84D;
-    font-size: 13px;
-    color: #8B4513;
-    line-height: 1.8;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-  }
-  .promo {
-    background: linear-gradient(135deg, rgba(255, 200, 100, 0.4) 0%, rgba(255, 182, 77, 0.4) 100%);
-    border: 2px solid #FFB84D;
-    border-radius: 12px;
-    padding: 18px;
-    margin-top: 22px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #E6D9F0;
+    text-align: center;
     font-size: 12px;
-    color: #8B4513;
-    line-height: 1.8;
-    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.15);
-  }
-  .promo-title {
-    font-weight: 700;
-    margin-bottom: 10px;
-    color: #D97F00;
-    letter-spacing: 0.5px;
-    font-size: 13px;
-  }
-  .promo-icon {
-    display: inline-block;
-    margin: 0 2px;
+    color: #7B5BA7;
+    font-weight: 600;
+    line-height: 1.6;
   }
   .back-button {
     display: block;
-    margin-top: 32px;
-    padding: 14px 32px;
+    margin-top: 28px;
+    padding: 12px 28px;
     background: linear-gradient(135deg, #7B5BA7 0%, #9B7BC4 100%);
     color: white;
     text-decoration: none;
-    border-radius: 12px;
-    font-family: "Apple SD Gothic Neo", sans-serif;
-    font-size: 15px;
+    border-radius: 8px;
+    font-size: 14px;
     font-weight: 600;
     text-align: center;
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    box-shadow: 0 8px 20px rgba(123, 91, 167, 0.25);
+    transition: all 0.3s;
+    box-shadow: 0 6px 16px rgba(123, 91, 167, 0.2);
     border: none;
     cursor: pointer;
-    letter-spacing: 0.5px;
   }
   .back-button:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(123, 91, 167, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(123, 91, 167, 0.3);
   }
   .error {
     color: #d32f2f;
@@ -239,7 +148,7 @@
 <body>
   <div class="receipt-container">
     <div id="content"></div>
-    <a href="list.html" class="back-button">← 목록으로 돌아가기</a>
+    <a href="list.html" class="back-button">← 목록으로</a>
   </div>
 
 <script>
@@ -263,65 +172,47 @@ async function load() {
     const dateStr = dateObj.toLocaleDateString('ko-KR');
     const timeStr = dateObj.toLocaleTimeString('ko-KR');
 
-    const productEmoji = {
-      '카페라떼': '☕',
-      '아메리카노': '🖤',
-      '코코아': '🤎',
-      '우유': '🥛',
-      '율무차': '🟫'
+    const emojis = {
+      '카페라떼': '☕', '아메리카노': '🖤', '코코아': '🤎', '우유': '🥛', '율무차': '🟫'
     };
-    const emoji = productEmoji[data.product] || '☕';
+    const emoji = emojis[data.product] || '☕';
 
     document.getElementById('content').innerHTML = `
       <div class="receipt">
         <div class="header">
-          <div class="trophy">🏆</div>
-          <div class="store-name">☕ 커피 자판기 ☕</div>
-          <div class="store-tagline">Fresh Coffee, Always Ready</div>
+          <div class="store-name">☕ 커피 자판기</div>
           <div class="receipt-title">─── 영 수 증 ───</div>
-          <div class="receipt-date">📅 ${dateStr}  ⏰ ${timeStr}</div>
+          <div class="receipt-date">${dateStr} ${timeStr}</div>
         </div>
 
         <div class="section">
-          <div class="item-row">
-            <div class="item-name"><strong>상품명</strong></div>
-            <div class="item-qty"><strong>수량</strong></div>
-            <div class="item-price"><strong>가격</strong></div>
+          <div class="item-row" style="font-weight: 600; margin-bottom: 10px;">
+            <span class="item-name">상품</span>
+            <span class="item-qty">수량</span>
+            <span class="item-price">금액</span>
           </div>
           <div class="divider"></div>
           <div class="item-row">
-            <div class="item-name">${emoji} ${data.product}</div>
-            <div class="item-qty">${data.quantity}개</div>
-            <div class="item-price">${data.price_per_unit.toLocaleString('ko-KR')}</div>
+            <span class="item-name">${emoji} ${data.product}</span>
+            <span class="item-qty">${data.quantity}</span>
+            <span class="item-price">${data.price_per_unit.toLocaleString('ko-KR')}</span>
           </div>
         </div>
 
-        <div class="total-section">
-          <div class="total-label">📊 총 ${data.quantity}개 구매</div>
-          <div class="divider"></div>
-          <div class="total-label">💰 최종 결제액</div>
-          <div class="total-amount">${data.total_price.toLocaleString('ko-KR')}<span class="won-symbol">원</span></div>
+        <div class="section">
+          <div class="total-label">합계</div>
+          <div class="total-amount">${data.total_price.toLocaleString('ko-KR')}원</div>
         </div>
 
         <div class="section">
           <div class="footer-info">
-            <div><span class="footer-icon">👤</span> 구매자 : ${data.buyer_name}</div>
-            <div><span class="footer-icon">🧾</span> 주문번호 : #${data.id}</div>
+            <div>👤 구매자: ${data.buyer_name}</div>
+            <div>🧾 주문번호: #${data.id}</div>
           </div>
         </div>
 
         <div class="footer-message">
-          ⭐ 감사합니다! ⭐
-          <br><br>
-          언제나 맛있는 커피로 만나요 ☕
-        </div>
-
-        <div class="promo">
-          <div class="promo-title">☕ 프리미엄 커피</div>
-          <span class="promo-icon">✨</span> 매일 신선하게 준비한 최고의 커피<br>
-          <span class="promo-icon">🕐</span> 매일 아침 8시 ~ 저녁 6시<br>
-          <br>
-          <span class="promo-icon">⭐</span> <strong>더 자주 방문해주세요!</strong>
+          감사합니다!<br>다시 방문해주세요 ☕
         </div>
       </div>
     `;
