@@ -3,91 +3,239 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>커피 주문 등록 - Day13</title>
+<title>주문 등록 - 커피 자판기</title>
 <style>
-  :root {
-    --ink: #183027;
-    --muted: #64736c;
-    --paper: #f7f5ed;
-    --panel: #fffdf6;
-    --line: #d7dbcf;
-    --green: #257357;
-    --green-soft: #dff0e7;
-    --orange: #dd7b35;
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+  body {
+    font-family: "Apple SD Gothic Neo", sans-serif;
+    background: linear-gradient(135deg, #F8F6FF 0%, #F3EFFF 50%, #EBE5F8 100%);
+    min-height: 100vh;
+    color: #2C2C2C;
+    padding: 28px 16px;
   }
-  * { box-sizing: border-box; }
-  body { font-family: "Apple SD Gothic Neo", Pretendard, sans-serif; color: var(--ink); background: var(--paper); max-width: 480px; margin: 40px auto; padding: 0 16px; }
-  h1 { font-size: 22px; margin: 0 0 4px; }
-  p.lead { color: var(--muted); font-size: 14px; margin: 0 0 18px; }
-  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 22px; }
-  label { display: block; margin: 14px 0 4px; font-weight: 700; font-size: 14px; }
-  input, select { width: 100%; padding: 10px 12px; border: 1px solid #bfc9bf; border-radius: 8px; font-size: 15px; background: #fff; color: var(--ink); font-family: inherit; }
-  input:focus, select:focus { outline: 3px solid var(--green-soft); border-color: var(--green); }
-  button { margin-top: 18px; width: 100%; padding: 12px 22px; background: var(--orange); color: #fff; border: 0; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; }
-  button:disabled { opacity: .55; cursor: wait; }
-  .msg { margin-top: 14px; font-size: 14px; display: none; padding: 10px 12px; border-radius: 8px; }
-  .msg.ok { display: block; background: var(--green-soft); color: var(--green); }
-  .msg.err { display: block; background: #fbeae2; color: #b23c1a; }
-  a { color: var(--green); }
+  .container {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+    animation: fadeIn 0.6s ease-out;
+  }
+  .header h1 {
+    font-size: 36px;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #7B5BA7 0%, #B565D8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+  }
+  .header p {
+    color: #999;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .header a {
+    display: inline-block;
+    margin-top: 8px;
+    color: #7B5BA7;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.3s;
+  }
+  .header a:hover {
+    color: #B565D8;
+  }
+  .card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.90) 100%);
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 8px 32px rgba(123, 91, 167, 0.1);
+    border: 1px solid rgba(123, 91, 167, 0.08);
+    animation: fadeIn 0.8s ease-out;
+  }
+  .form-group {
+    margin-bottom: 20px;
+  }
+  .form-group:last-of-type {
+    margin-bottom: 0;
+  }
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #7B5BA7;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  input, select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #E6D9F0;
+    border-radius: 10px;
+    font-size: 14px;
+    background: linear-gradient(135deg, #FFFFFF 0%, #FAF8FC 100%);
+    color: #2C2C2C;
+    font-family: inherit;
+    transition: all 0.3s;
+  }
+  input:focus, select:focus {
+    outline: none;
+    border-color: #7B5BA7;
+    box-shadow: 0 0 0 3px rgba(123, 91, 167, 0.1);
+  }
+  input::placeholder {
+    color: #BBB;
+  }
+  button {
+    margin-top: 24px;
+    width: 100%;
+    padding: 14px 24px;
+    background: linear-gradient(135deg, #7B5BA7 0%, #B565D8 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 6px 16px rgba(123, 91, 167, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(123, 91, 167, 0.3);
+  }
+  button:active {
+    transform: translateY(0);
+  }
+  button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+    transform: none;
+  }
+  .msg {
+    margin-top: 16px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    display: none;
+    animation: fadeIn 0.3s ease-out;
+  }
+  .msg.ok {
+    display: block;
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(76, 175, 80, 0.05) 100%);
+    color: #2E7D32;
+    border: 1px solid rgba(76, 175, 80, 0.2);
+  }
+  .msg.err {
+    display: block;
+    background: linear-gradient(135deg, rgba(211, 47, 47, 0.1) 0%, rgba(211, 47, 47, 0.05) 100%);
+    color: #C62828;
+    border: 1px solid rgba(211, 47, 47, 0.2);
+  }
 </style>
 </head>
-<script defer src="https://cdn.vercel-analytics.com/v1/script.js"></script>
 <body>
-  <h1>커피 주문 등록</h1>
-  <p class="lead">주문 1건을 등록하면 판매 표에 행으로 쌓입니다. <a href="list.html">판매 현황 보기</a></p>
-  <div class="card">
-    <form id="order-form">
-      <label for="buyer_name">구매자 이름</label>
-      <input id="buyer_name" name="buyer_name" required placeholder="예: 김하늘">
+  <script defer src="https://cdn.vercel-analytics.com/v1/script.js"></script>
 
-      <label for="product">메뉴</label>
-      <select id="product" name="product" required>
-        <option value="아메리카노">아메리카노 (3,000원)</option>
-        <option value="카페라떼">카페라떼 (4,000원)</option>
-        <option value="율무차">율무차 (3,500원)</option>
-        <option value="코코아">코코아 (4,000원)</option>
-        <option value="우유">우유 (2,500원)</option>
-      </select>
+  <div class="container">
+    <div class="header">
+      <h1>☕ 주문 등록</h1>
+      <p>신선한 커피를 주문하세요</p>
+      <a href="list.html">📊 판매 현황 보기 →</a>
+    </div>
 
-      <label for="quantity">수량</label>
-      <input id="quantity" name="quantity" type="number" min="1" value="1" required>
+    <div class="card">
+      <form id="order-form">
+        <div class="form-group">
+          <label for="buyer_name">👤 구매자 이름</label>
+          <input id="buyer_name" name="buyer_name" required placeholder="예: 김하늘">
+        </div>
 
-      <button id="btn" type="submit">주문 등록</button>
-    </form>
-    <div id="msg" class="msg"></div>
+        <div class="form-group">
+          <label for="product">☕ 메뉴 선택</label>
+          <select id="product" name="product" required>
+            <option value="">메뉴를 선택하세요</option>
+            <option value="아메리카노">🖤 아메리카노 (3,000원)</option>
+            <option value="카페라떼">☕ 카페라떼 (4,000원)</option>
+            <option value="코코아">🤎 코코아 (4,000원)</option>
+            <option value="율무차">🟫 율무차 (3,500원)</option>
+            <option value="우유">🥛 우유 (2,500원)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="quantity">📦 수량</label>
+          <input id="quantity" name="quantity" type="number" value="1" min="1" max="99" required>
+        </div>
+
+        <div class="form-group">
+          <label for="price_per_unit">💰 단가</label>
+          <input id="price_per_unit" name="price_per_unit" type="number" value="3000" min="1000" required>
+        </div>
+
+        <button type="submit">✓ 주문 등록하기</button>
+        <div id="message" class="msg"></div>
+      </form>
+    </div>
   </div>
 
 <script>
-document.getElementById('order-form').addEventListener('submit', async (e) => {
+const form = document.getElementById('order-form');
+const msg = document.getElementById('message');
+
+form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const btn = document.getElementById('btn');
-  const msg = document.getElementById('msg');
+
+  const btn = form.querySelector('button');
   btn.disabled = true;
+  msg.textContent = '';
   msg.className = 'msg';
+
   try {
+    const formData = new FormData(form);
+    const body = Object.fromEntries(formData);
+    body.total_price = body.quantity * body.price_per_unit;
+
     const res = await fetch('/api/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        buyer_name: document.getElementById('buyer_name').value,
-        product: document.getElementById('product').value,
-        quantity: document.getElementById('quantity').value,
-      }),
+      body: JSON.stringify(body)
     });
-    if (res.ok) {
-      msg.textContent = '주문이 등록됐습니다 - 판매 현황에서 확인해 보세요';
-      msg.className = 'msg ok';
-      e.target.reset();
-    } else {
-      const body = await res.json().catch(() => ({}));
-      msg.textContent = '등록에 실패했습니다: ' + (body.error || res.status);
-      msg.className = 'msg err';
-    }
-  } catch (err) {
-    msg.textContent = '연결에 실패했습니다: ' + err.message;
+
+    if (!res.ok) throw new Error('등록 실패');
+
+    msg.textContent = '✓ 주문이 등록되었습니다!';
+    msg.className = 'msg ok';
+    form.reset();
+    document.getElementById('quantity').value = '1';
+    document.getElementById('price_per_unit').value = '3000';
+  } catch (e) {
+    msg.textContent = '❌ 오류: ' + e.message;
     msg.className = 'msg err';
+  } finally {
+    btn.disabled = false;
   }
-  btn.disabled = false;
+});
+
+document.getElementById('product').addEventListener('change', (e) => {
+  const prices = {
+    '아메리카노': 3000,
+    '카페라떼': 4000,
+    '코코아': 4000,
+    '율무차': 3500,
+    '우유': 2500
+  };
+  document.getElementById('price_per_unit').value = prices[e.target.value] || 3000;
 });
 </script>
 </body>
