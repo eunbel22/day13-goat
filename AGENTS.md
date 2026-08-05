@@ -1,132 +1,139 @@
 # AGENTS.md
-Guidelines for Claude Code before modifying this Day13 coffee vending machine project (order registration + sales dashboard + detail page).
+Guidelines for Claude Code before modifying this Day13 project. Read this alongside CLAUDE.md (Korean version).
 
 ---
 
-## Golden Rule: Confirm User Intent Before Acting
+## Golden Rule: Confirm Before Acting
 
-**If a request is ambiguous or has multiple interpretations, STOP and ask AskUserQuestion FIRST.** Do not assume or guess. Confirmation is faster than fixing wrong changes.
-
----
-
-## Policy 1: Clarify Design Change Targets
-
-**When users request design changes (e.g., "make text bigger", "change colors"), always confirm THREE things:**
-1. **Which file and location?** (e.g., list.html chart labels, not entire page)
-2. **What exactly changes?** (font size, text length, color — be specific)
-3. **What stays untouched?** (don't add gradients/shadows unless requested)
-
-**Example**: User says "increase text size" → Ask "Do you mean the product names in the chart? Just enlarge the font? Leave everything else unchanged?" → Wait for answer → Execute.
-
-**Violation to avoid**: Changing graph colors to gradients, darkening shades, or adding effects not requested. Stick to exactly what was asked.
+**STOP and use AskUserQuestion if any part of a request is ambiguous.** Do not assume, guess, or improvise. Confirmation takes seconds; fixing wrong changes takes minutes.
 
 ---
 
-## Policy 2: Confirm Intent for Sample/Reference Elements
+## Policy 1: Design Changes — Confirm Target, Scope, and Intent
 
-**When users show design samples (e.g., Sayvoca screenshots, icons, color palettes), ALWAYS ask BEFORE using them:**
-1. **Where should this go?** (specific file, section, component)
-2. **Why this element?** (aesthetic, functional, data-related)
-3. **How much of it?** (just the icon? the whole component?)
+**When users request UI/design changes:**
+1. **Identify target**: Which file(s)? Which element? (e.g., "chart labels in list.html", not "the whole page")
+2. **Clarify scope**: What property changes? (font, color, size, spacing, layout — be specific). What stays untouched?
+3. **Confirm no side effects**: Will this break mobile layout? Affect other components?
 
-**Example**: User shows trophy icon → Ask "Should the trophy appear in the sales dashboard to mark best-selling product? Or elsewhere?" → Wait for answer → Place it correctly with meaning.
+**Example flow**: User: "Make text bigger" → Ask: "Product names in the chart? Just font size? Leave spacing unchanged?" → Wait for answer → Execute exactly that, nothing more.
 
-**Violation to avoid**: Placing trophy randomly on detail.html without purpose. Using decorative elements just because they look good, not because they serve a function.
-
----
-
-## Policy 3: Mobile-First UI Requirements
-
-**This project must be mobile-responsive. When designing or modifying UI, always ensure:**
-1. Components resize properly on screens ≤ 480px wide (use media queries)
-2. Touch targets are ≥ 44px for buttons and interactive elements
-3. Text is readable without horizontal scrolling (max-width constraints)
-
-**Test**: Preview changes on mobile (Chrome DevTools: toggle device toolbar). If it breaks layout or text is cut off, fix it before shipping.
-
-**Non-negotiable**: Every page (index.html, list.html, detail.html) must work smoothly on both desktop and mobile.
+**Violation to avoid**: Adding gradients, darkening colors, or changing unrelated elements. Stick to the request.
 
 ---
 
-## Policy 4: Design Clarity Checklist
+## Policy 2: Reference Materials — Always Ask "Where and Why?"
 
-**Before executing ANY UI/design change, confirm these in order:**
+**When users show samples (screenshots, icons, color palettes, design references):**
+1. **Ask explicitly**: "Where should this appear?" and "What's the purpose?" — do not assume placement
+2. **Wait for confirmation**: Use only what the user explicitly approves
+3. **No improvisation**: Do not extract parts randomly or repurpose elsewhere
 
-- [ ] **File**: Which file(s) change? (index.html / list.html / detail.html)
-- [ ] **Location**: Exact screen region (chart labels, header, buttons)
-- [ ] **Change type**: What property? (font, color, size, spacing, layout)
-- [ ] **Scope**: Only this element? Or does it affect others?
-- [ ] **Purpose**: Why? (readability, data clarity, mobile fit, visual hierarchy)
-- [ ] **Mobile impact**: Does this break mobile layout?
+**Example flow**: User shows Sayvoca trophy icon → Ask: "Should this mark the best-selling product in list.html? Or is it decorative elsewhere?" → Get explicit answer → Use only as confirmed.
 
-**If any are unclear: use AskUserQuestion before proceeding.**
+**Violation to avoid**: Placing decorative elements randomly without stated purpose (e.g., trophy on detail.html with no meaning).
+
+---
+
+## Policy 3: Mobile-First is Non-Negotiable
+
+**Every UI change must work on mobile (≤480px width):**
+1. Components resize properly without horizontal scrolling
+2. Touch targets stay ≥44px (buttons, links, form inputs)
+3. Text remains readable; no truncation unless intentional
+
+**Test before shipping**: Use Chrome DevTools device toolbar. If mobile breaks, fix it — do not merge.
+
+**Never compromise**: Desktop-only changes that break mobile are bugs, not features.
+
+---
+
+## Policy 4: Clarity Checklist (Use This Before Every Change)
+
+Before executing ANY UI/design request:
+
+- [ ] **File**: Which file(s)? (index.html / list.html / detail.html / other)
+- [ ] **Location**: Exact screen region? (chart, header, button row, form, etc.)
+- [ ] **Change**: What property? (font size, color hex, spacing px, layout grid, etc.)
+- [ ] **Scope**: Only this element? Or cascading effects?
+- [ ] **Purpose**: Why? (readability, data clarity, mobile fit, user hierarchy)
+- [ ] **Mobile impact**: Does this break ≤480px layout?
+
+**If ANY are unclear or missing: Ask first via AskUserQuestion.**
 
 ---
 
 ## Policy 5: Request Clarity Levels
 
-**Clear requests (proceed immediately):**
-- "Expand chart labels in list.html so 'カフェラテ' (full name) displays without truncation"
-- "Center the trophy icon in detail.html header with 2em size"
-- "Make buttons tappable on mobile (min 48px height)"
+**Clear ✓ (proceed):**
+- "Expand product names in list.html chart so 'カフェラテ' displays fully without truncation"
+- "Center trophy icon in detail.html header, 2em size, marks best-selling product"
+- "Make submit button tappable on mobile: min 48px height, thumb-friendly"
 
-**Unclear requests (ask first):**
-- "Make text bigger" ← Which text? Where?
-- "Add a trophy" ← Where? For what purpose?
-- "Change colors" ← Which colors? To what?
-- "Improve the design" ← Specific improvement needed
+**Unclear ✗ (ask first):**
+- "Make text bigger" ← Which text? Where? Just font? With spacing?
+- "Add a trophy" ← Where? For what purpose? Decorative or data-linked?
+- "Improve design" ← Which specific improvement? What metric?
+- "Change colors" ← Which elements? To what color? Why?
 
-**Default behavior**: When in doubt, ask. It saves time.
-
----
-
-## Policy 6: Sample/Reference Material Handling
-
-**If users provide design samples (images, screenshots, color palettes, icons):**
-
-1. Do NOT assume where or how to use them
-2. Ask: "Where should this appear?" and "What's the purpose?"
-3. Wait for explicit confirmation before applying
-4. Use only the parts the user approves; don't improvise
-
-**Example workflow**:
-- User shows Sayvoca screenshot → Ask clarifying questions → Get explicit answer → Apply only what was confirmed
-
-**Never**: Extract parts randomly or repurpose them elsewhere without asking.
+**Default**: When unsure, ask. It saves time.
 
 ---
 
-## Policy 7: When to Enter Plan Mode
+## Policy 6: Never Assume User Intent From Samples
 
-**Use Plan Mode → AskUserQuestion in Initial Understanding phase when:**
-- Request is vague or has multiple valid interpretations
-- UI change affects multiple files
-- Sample/reference materials need intent clarification
-- Design impact on mobile layout is uncertain
+**This is critical.** Showing you a design does NOT mean "use this everywhere."
+
+If user shows Sayvoca stats cards → **Do not** automatically add similar cards to detail.html without asking where and why.
+If user shows trophy icon → **Do not** place it randomly. Ask: "Where should this go? What does it represent?"
+
+**Process**: See sample → Ask clarification → Get explicit answer → Apply only as confirmed.
+
+---
+
+## Policy 7: Plan Mode Requirement
+
+**Use Plan Mode (with AskUserQuestion in Phase 1) when:**
+- Request has multiple valid interpretations
+- UI change spans multiple files
+- Sample materials need intent clarification
+- Mobile layout impact is uncertain
+- Change could affect user experience unexpectedly
 
 **Skip Plan Mode only for:**
-- Typo fixes (single file, obvious intent)
-- One-line logic changes (documented, clear scope)
-- Simple renames with full context
+- Obvious typo fixes (single file, clear intent)
+- One-line logic changes (well-documented, narrow scope)
+- Simple renames with full context provided
 
 ---
 
-## Policy 8: Korean Language in Code Comments
+## Policy 8: Korean & English in This Project
 
-**Project is in Korean (CLAUDE.md, file content). When adding code:**
-- Write code in English (variable names, function logic)
-- Use Korean for UI text (customer-facing strings) only
-- Keep this AGENTS.md and CLAUDE.md in their original languages for project maintainers
+**CLAUDE.md is in Korean** (user-facing, instructional). **AGENTS.md is in English** (for agents to read quickly).
+
+**In code:**
+- Variable names, function logic: **English**
+- UI text, labels, messages: **Korean** (for users)
+- Comments: Follow the file's language
 
 ---
 
-## Summary for Agents
+## Pre-Execution Checklist for Agents
 
-Before any change:
-1. **Confirm unclear requests** via AskUserQuestion
-2. **Check mobile responsiveness** — if mobile layout breaks, fix it
-3. **Understand sample usage** — ask where and why before applying
-4. **Use the checklist** — file, location, change type, scope, purpose, mobile impact
-5. **Wait for answers** — don't guess or improvise
+Before ANY change:
 
-**Speed comes from clarity, not from skipping confirmation steps.**
+1. ✓ Is this request clear? (Use checklist from Policy 4)
+2. ✓ Did I confirm the target, scope, and intent?
+3. ✓ Is mobile layout affected? (Test if yes)
+4. ✓ Does this align with CLAUDE.md rules?
+5. ✓ Am I doing EXACTLY what was asked, nothing more?
+
+If you answer "no" to ANY: Stop and ask via AskUserQuestion. Do not guess.
+
+---
+
+## Summary: Speed Comes From Clarity
+
+Fast execution = clear communication first, then precise action. Skipping clarification causes rework. A 30-second confirmation saves 5 minutes of fixes.
+
+**Remember**: The user can see the result. If it's wrong, it's wrong — no partial credit. Confirm first.
