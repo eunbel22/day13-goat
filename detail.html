@@ -6,7 +6,6 @@
 <title>영수증</title>
 <style>
   @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-4px); } }
 
   body {
     font-family: "Apple SD Gothic Neo", sans-serif;
@@ -20,7 +19,7 @@
   }
   .receipt-container {
     width: 100%;
-    max-width: 440px;
+    max-width: 460px;
   }
   .receipt {
     background: white;
@@ -61,32 +60,62 @@
   .section:last-of-type {
     border-bottom: none;
   }
+  .item-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #666;
+  }
+  .divider {
+    border-top: 1px dashed #E6D9F0;
+    margin: 10px 0;
+  }
   .item-row {
     display: flex;
     justify-content: space-between;
     font-size: 13px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     gap: 8px;
   }
   .item-name {
     text-align: left;
     flex: 1;
-    color: #666;
+    color: #2C2C2C;
+    font-weight: 500;
   }
   .item-qty {
     text-align: right;
-    min-width: 30px;
+    min-width: 35px;
     color: #666;
   }
   .item-price {
     text-align: right;
-    min-width: 70px;
+    min-width: 75px;
     font-weight: 600;
+    color: #7B5BA7;
+  }
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 10px;
+    gap: 8px;
+  }
+  .detail-label {
+    color: #999;
+  }
+  .detail-value {
+    text-align: right;
+    font-weight: 500;
     color: #2C2C2C;
   }
-  .divider {
-    border-top: 1px dashed #E6D9F0;
-    margin: 10px 0;
+  .total-section {
+    background: linear-gradient(135deg, rgba(123, 91, 167, 0.04) 0%, rgba(181, 101, 216, 0.04) 100%);
+    border-radius: 8px;
+    padding: 14px;
+    margin: 16px 0;
   }
   .total-label {
     font-size: 12px;
@@ -95,11 +124,9 @@
     font-weight: 500;
   }
   .total-amount {
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 800;
-    margin: 10px 0 16px;
     color: #7B5BA7;
-    animation: float 2.5s ease-in-out infinite;
   }
   .footer-info {
     text-align: left;
@@ -107,14 +134,17 @@
     color: #666;
     line-height: 1.8;
   }
+  .footer-info div {
+    margin-bottom: 6px;
+  }
   .footer-message {
-    margin-top: 20px;
-    padding-top: 16px;
-    border-top: 1px solid #E6D9F0;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px dashed #E6D9F0;
     text-align: center;
     font-size: 12px;
     color: #7B5BA7;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1.6;
   }
   .back-button {
@@ -186,33 +216,37 @@ async function load() {
         </div>
 
         <div class="section">
-          <div class="item-row" style="font-weight: 600; margin-bottom: 10px;">
-            <span class="item-name">상품</span>
-            <span class="item-qty">수량</span>
-            <span class="item-price">금액</span>
+          <div class="item-header">
+            <span>상품</span>
+            <span>수량</span>
+            <span>단가</span>
           </div>
           <div class="divider"></div>
           <div class="item-row">
             <span class="item-name">${emoji} ${data.product}</span>
-            <span class="item-qty">${data.quantity}</span>
-            <span class="item-price">${data.price_per_unit.toLocaleString('ko-KR')}</span>
+            <span class="item-qty">${data.quantity}개</span>
+            <span class="item-price">${data.price_per_unit.toLocaleString('ko-KR')}원</span>
           </div>
         </div>
 
-        <div class="section">
+        <div class="total-section">
           <div class="total-label">합계</div>
           <div class="total-amount">${data.total_price.toLocaleString('ko-KR')}원</div>
         </div>
 
         <div class="section">
-          <div class="footer-info">
-            <div>👤 구매자: ${data.buyer_name}</div>
-            <div>🧾 주문번호: #${data.id}</div>
+          <div class="detail-row">
+            <span class="detail-label">구매자</span>
+            <span class="detail-value">${data.buyer_name}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">주문번호</span>
+            <span class="detail-value">#${data.id}</span>
           </div>
         </div>
 
         <div class="footer-message">
-          감사합니다!<br>다시 방문해주세요 ☕
+          감사합니다! 다시 방문해주세요 ☕
         </div>
       </div>
     `;
